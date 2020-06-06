@@ -3,25 +3,29 @@ import json
 
 class Query(graphene.ObjectType):
     hello = graphene.String()
+    is_admin = graphene.Boolean()
 
     def resolve_hello(self, info):
         return "world"
 
-schema = graphene.Schema(query=Query)
+    def resolve_is_admin(self, info):
+        return True
+
+schema = graphene.Schema(query=Query,auto_camelcase=False)
 
 result = schema.execute(
     '''
     {
-        hello
+        is_admin
     }
     '''
 )
 
-print(result.data.items())
-print(result.data['hello'])
+# print(result.data.items())
+# print(result.data['hello'])
 
 dictResult = dict(result.data.items())
-print(json.dumps(dictResult))
+# print(json.dumps(dictResult))
 print(json.dumps(dictResult,indent=2))
 
 
